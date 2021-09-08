@@ -5,6 +5,7 @@ from django.urls import reverse
 from posts.models import Post, Group, User
 from django.core.cache import cache
 
+
 class CacheContentTest(TestCase):
     @classmethod
     def setUpClass(cls):
@@ -18,11 +19,11 @@ class CacheContentTest(TestCase):
                 description='test description'
             )
         )
+
     def setUp(self):
         self.user = self.post.author
         self.authorized_client = Client()
         self.authorized_client.force_login(self.user)
-
 
     def test_index_page_cached(self):
         # Проверка главной страницы

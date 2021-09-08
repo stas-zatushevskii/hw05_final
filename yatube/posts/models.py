@@ -5,7 +5,6 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
-
 class Group(models.Model):
     title = models.CharField(max_length=200, verbose_name='группы')
     slug = models.SlugField(unique=True, verbose_name='слуг')
@@ -55,6 +54,7 @@ class Post(models.Model):
         verbose_name = 'текст поста'
         ordering = ['-pub_date']
 
+
 class Comment(models.Model):
     post = models.ForeignKey(
         Post,
@@ -76,6 +76,7 @@ class Comment(models.Model):
     created = models.DateTimeField(
         auto_now_add=True
     )
+
 
 class Follow(models.Model):
     user = models.ForeignKey(
