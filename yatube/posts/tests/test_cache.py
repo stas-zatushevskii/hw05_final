@@ -1,5 +1,4 @@
 from django.urls import reverse
-from django.conf import settings
 from django.test import Client, TestCase
 from django.urls import reverse
 from posts.models import Post, Group, User

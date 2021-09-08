@@ -66,4 +66,3 @@ def user_contact(request):
     # пусть пользователь напишет что-нибудь
     form = ContactForm()
     return render(request, 'contact.html', {'form': form})
-
