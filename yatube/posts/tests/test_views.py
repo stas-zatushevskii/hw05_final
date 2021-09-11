@@ -59,7 +59,8 @@ class PostPagesTests(TestCase):
     def test_post_list_page_show_correct_context(self):
         """Шаблон post_list сформирован с правильным контекстом."""
         response = (self.authorized_client.get(
-            reverse('posts:group_posts', kwargs={'slug': f'{self.group.slug}'})))
+            reverse('posts:group_posts', kwargs={
+                'slug': f'{self.group.slug}'})))
         self.assertEqual(
             response.context.get('group').title, 'тестовое название')
         self.assertEqual(
@@ -85,7 +86,8 @@ class PostPagesTests(TestCase):
 
         """на странице выбранной группы"""
         response = (self.authorized_client.get(
-            reverse('posts:group_posts', kwargs={'slug': f'{self.group.slug}'})))
+            reverse('posts:group_posts', kwargs={
+                'slug': f'{self.group.slug}'})))
         response.context.get('page_obj')
         counted_posts = len(response.context['page_obj'])
         Post.objects.create(
@@ -111,5 +113,3 @@ class PostPagesTests(TestCase):
         response.context.get('page_obj')
 
         self.assertEqual(len(response.context['page_obj']), counted_posts + 1)
-
-
