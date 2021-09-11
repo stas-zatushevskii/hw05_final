@@ -66,7 +66,8 @@ class PostPagesTests(TestCase):
         self.assertEqual(
             response.context.get('group').slug, f'{self.group.slug}')
         self.assertEqual(
-            response.context.get('group').description, f'{self.group.description}')
+            response.context.get(
+                'group').description, f'{self.group.description}')
 
     def test_post_show_coreect(self):
         """на главной странице сайта"""
