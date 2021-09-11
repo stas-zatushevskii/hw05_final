@@ -20,6 +20,17 @@ class PostPagesTests(TestCase):
             slug='test-slug',
             description='Тестовое описание',
         )
+        """тестовык записи"""
+        Post.objects.create(
+            title='Заголовок',
+            text='Текст',
+            slug='test-slug',
+        )
+        Post.objects.create(
+            title='Заголовок_1',
+            text='Текст_1',
+            slug='test-slug_1',
+        )
 
     def setUp(self):
         # Создаем авторизованный клиент
@@ -55,3 +66,11 @@ class PostPagesTests(TestCase):
             response.context.get('group').slug, f'{self.group.slug}')
         self.assertEqual(
             response.context.get('group').description, 'Тестовое описание')
+
+    def test_post_show_coreect(self):
+        response = (self.authorized_client.get(
+            reverse('posts:index')))
+        response.context.get('page').object_list
+        self.assertEqual(len(response.context['object_list']), 2)
+        
+
