@@ -68,9 +68,48 @@ class PostPagesTests(TestCase):
             response.context.get('group').description, 'Тестовое описание')
 
     def test_post_show_coreect(self):
+        """на главной странице сайта"""
         response = (self.authorized_client.get(
             reverse('posts:index')))
-        response.context.get('page').object_list
-        self.assertEqual(len(response.context['object_list']), 2)
-        
+        response.context.get('page_obj')
+        counted_posts = len(response.context['page_obj'])
+        Post.objects.create(
+            author=self.user,
+            text='тестовый текст3'
+        )
+        response = (self.authorized_client.get(
+            reverse('posts:index')))
+        response.context.get('page_obj')
+
+        self.assertEqual(len(response.context['page_obj']), counted_posts + 1)
+
+        """на странице выбранной группы"""
+        response = (self.authorized_client.get(
+            reverse('posts:group_posts', kwargs={'slug': f'{self.group.slug}'})))
+        response.context.get('page_obj')
+        counted_posts = len(response.context['page_obj'])
+        Post.objects.create(
+            author=self.user,
+            text='тестовый текст3'
+        )
+        response = (self.authorized_client.get(
+            reverse('posts:index')))
+        response.context.get('page_obj')
+
+        self.assertEqual(len(response.context['page_obj']), counted_posts + 1)
+        """в профайле пользователя"""
+        response = (self.authorized_client.get(
+            reverse('posts:profile', kwargs={'username': self.user.username})))
+        response.context.get('page_obj')
+        counted_posts = len(response.context['page_obj'])
+        Post.objects.create(
+            author=self.user,
+            text='тестовый текст3'
+        )
+        response = (self.authorized_client.get(
+            reverse('posts:profile', kwargs={'username': self.user.username})))
+        response.context.get('page_obj')
+
+        self.assertEqual(len(response.context['page_obj']), counted_posts + 1)
+
 
