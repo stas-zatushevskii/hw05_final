@@ -62,11 +62,11 @@ class PostPagesTests(TestCase):
             reverse('posts:group_posts', kwargs={
                 'slug': f'{self.group.slug}'})))
         self.assertEqual(
-            response.context.get('group').title, 'тестовое название')
+            response.context.get('group').title, f'{self.group.title}')
         self.assertEqual(
             response.context.get('group').slug, f'{self.group.slug}')
         self.assertEqual(
-            response.context.get('group').description, 'Тестовое описание')
+            response.context.get('group').description, f'{self.group.description}')
 
     def test_post_show_coreect(self):
         """на главной странице сайта"""
