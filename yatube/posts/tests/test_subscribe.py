@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
+from django.urls import reverse
 from posts.models import Follow
+
 
 User = get_user_model()
 
@@ -21,8 +23,21 @@ class PostPagesTests(TestCase):
     def test_subscribe(self):
         follow_count = Follow.objects.filter(author=self.author).count()
         # Создаём подпищника
-        Follow.objects.create(user=self.user, author=self.author)
+        self.authorized_client.get(
+            reverse('posts:profile_follow', kwargs={'username': self.post.author}),
+            follow=True
+        )
         # проверяем
         self.assertEqual(
             Follow.objects.filter(author=self.author).count(), follow_count + 1
         )
+    def test_index_subscribe(self):
+        response = (self.authorized_client.get(
+            reverse('posts:follow_index')))
+        response.context.get('page_obj')
+        counted_posts = len(response.context['page_obj'])
+        Follow.objects.create(user=self.user, author=self.author) 
+        response = (self.authorized_client.get(
+            reverse('posts:follow_index')))
+        response.context.get('page_obj')
+        self.assertEqual(len(response.context['page_obj']), counted_posts + 1)
