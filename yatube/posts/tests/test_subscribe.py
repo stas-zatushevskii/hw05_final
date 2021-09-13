@@ -3,7 +3,6 @@ from django.test import Client, TestCase
 from django.urls import reverse
 from posts.models import Follow, Post
 
-
 User = get_user_model()
 
 
@@ -11,25 +10,22 @@ class PostPagesTests(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.user = User.objects.create_user(username='auth')
+        cls.user = User.objects.create_user(username='StasZatushevskii')
         cls.author = User.objects.create_user(username='author')
         cls.post = Post.objects.create(
-            author=cls.user,
+            author=cls.author,
             text='тестовый текст',
         )
-
-    def setUp(self):
         # Создаем авторизованный клиент
-        self.user = User.objects.create_user(username='StasZatushevskii')
-        self.authorized_client = Client()
-        self.authorized_client.force_login(self.user)
-
+        cls.authorized_client = Client()
+        cls.authorized_client.force_login(cls.user)
+    
     def test_subscribe(self):
-        follow_count = Follow.objects.filter(author=self.post.author).count()
+        follow_count = Follow.objects.filter(author=self.author).count()
         # Создаём подпищника
         self.authorized_client.get(
-            reverse('posts:profile_follow', kwargs={
-                'username': self.author}),
+            reverse('posts:profile_follow',
+            kwargs={'username': self.post.author.username}),
             follow=True
         )
         # проверяем
@@ -41,10 +37,10 @@ class PostPagesTests(TestCase):
         response = (self.authorized_client.get(
             reverse('posts:follow_index')))
         response.context.get('page_obj')
-        counted_posts = len(response.context['page_obj'])
+        counted_posts = Follow.objects.filter(user=self.user).count()
         Follow.objects.create(user=self.user, author=self.author)
         response = (self.authorized_client.get(
             reverse('posts:follow_index')))
 
         response.context.get('page_obj')
-        self.assertEqual(len(response.context['page_obj']), counted_posts + 1)
+        self.assertEqual(Follow.objects.filter(user=self.user).count(), counted_posts + 1)
