@@ -20,17 +20,6 @@ class PostPagesTests(TestCase):
             slug='test-slug',
             description='Тестовое описание',
         )
-        """тестовык записи"""
-        Post.objects.create(
-            title='Заголовок',
-            text='Текст',
-            slug='test-slug',
-        )
-        Post.objects.create(
-            title='Заголовок_1',
-            text='Текст_1',
-            slug='test-slug_1',
-        )
 
     def setUp(self):
         # Создаем авторизованный клиент
