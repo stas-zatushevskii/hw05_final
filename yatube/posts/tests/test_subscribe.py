@@ -19,13 +19,13 @@ class PostPagesTests(TestCase):
         # Создаем авторизованный клиент
         cls.authorized_client = Client()
         cls.authorized_client.force_login(cls.user)
-    
+
     def test_subscribe(self):
         follow_count = Follow.objects.filter(author=self.author).count()
         # Создаём подпищника
         self.authorized_client.get(
-            reverse('posts:profile_follow',
-            kwargs={'username': self.post.author.username}),
+            reverse('posts:profile_follow', kwargs={
+                'username': self.post.author.username}),
             follow=True
         )
         # проверяем
@@ -43,4 +43,5 @@ class PostPagesTests(TestCase):
             reverse('posts:follow_index')))
 
         response.context.get('page_obj')
-        self.assertEqual(Follow.objects.filter(user=self.user).count(), counted_posts + 1)
+        self.assertEqual(Follow.objects.filter(
+            user=self.user).count(), counted_posts + 1)
