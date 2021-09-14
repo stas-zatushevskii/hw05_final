@@ -2,24 +2,17 @@
 
 # Create your views here.
 
+from django.shortcuts import redirect, render
+# Функция reverse_lazy позволяет получить URL по параметрам функции path()
+# Берём, тоже пригодится
+from django.urls import reverse_lazy
 # users/views.py
 # Импортируем CreateView, чтобы создать ему наследника
 from django.views.generic import CreateView
 
-# Функция reverse_lazy позволяет получить URL по параметрам функции path()
-# Берём, тоже пригодится
-from django.urls import reverse_lazy
-
 # Импортируем класс формы, чтобы сослаться на неё во view-классе
-from .forms import CreationForm
-
+from .forms import ContactForm, CreationForm
 from .models import Contact
-
-from .forms import ContactForm
-
-from django.shortcuts import render
-
-from django.shortcuts import redirect
 
 
 class SignUp(CreateView):

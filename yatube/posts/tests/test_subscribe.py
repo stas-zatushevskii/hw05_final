@@ -45,3 +45,19 @@ class PostPagesTests(TestCase):
         response.context.get('page_obj')
         self.assertEqual(Follow.objects.filter(
             user=self.user).count(), counted_posts + 1)
+
+    def test_delete_subscribe(self):
+        follow_count = Follow.objects.filter(author=self.author).count()
+        # Создаём подпищника
+        self.authorized_client.get(
+            reverse('posts:profile_follow',
+            kwargs={'username': self.post.author.username}),
+            follow=True
+        )
+        # удаляем
+        self.authorized_client.get(
+            reverse('posts:profile_unfollow',
+            kwargs={'username': self.post.author.username}),
+            follow=True
+        )
+        self.assertEqual(Follow.objects.filter(user=self.user).count(), follow_count )

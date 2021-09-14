@@ -1,8 +1,7 @@
-from django.urls import reverse
+from django.core.cache import cache
 from django.test import Client, TestCase
 from django.urls import reverse
-from posts.models import Post, Group, User
-from django.core.cache import cache
+from posts.models import Group, Post, User
 
 
 class CacheContentTest(TestCase):
