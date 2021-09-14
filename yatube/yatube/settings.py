@@ -153,3 +153,7 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
     }
 }
+
+GLOBAL_SETTINGS = {
+    'posts_on_page': 10
+}
