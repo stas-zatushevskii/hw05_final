@@ -23,9 +23,9 @@ class PostPagesTests(TestCase):
         self.authorized_client = Client()
         self.authorized_client.force_login(self.user)
         self.post = Post.objects.create(
-            author=self.author,
-            text='тестовый текст',
-        )
+                    author=self.user,
+                    text='тестовый текст3',
+                )
         self.form_data = {
             'group': self.group.id,
             'text': 'Тестовый текст',
