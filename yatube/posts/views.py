@@ -38,10 +38,10 @@ def profile(request, username):
     template = 'posts/profile.html'
     user_posts = user.posts.all()
     posts_count = user_posts.count()
-    paginator = Paginator(user_posts, settings.GLOBAL_SETTINGS['posts_on_page'])
+    paginator = Paginator(
+        user_posts, settings.GLOBAL_SETTINGS['posts_on_page'])
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-
 
     following = Follow.objects.filter(
         user=request.user.id,
@@ -103,7 +103,8 @@ def post_edit(request, post_id):
         'form': form,
         'is_edit': True,
     }
-    return render(request, 'posts/create_post.html', context) 
+    return render(request, 'posts/create_post.html', context)
+
 
 @login_required
 def add_comment(request, post_id):
@@ -114,7 +115,8 @@ def add_comment(request, post_id):
         comment.author = request.user
         comment.post = post
         comment.save()
-    return redirect('posts:post_detail', post_id=post_id) 
+    return redirect('posts:post_detail', post_id=post_id)
+
 
 @login_required
 def follow_index(request):
@@ -129,17 +131,19 @@ def follow_index(request):
 
     return render(request, 'posts/follow.html', context)
 
+
 @login_required
 def profile_follow(request, username):
     # Подписаться на автора
     author = get_object_or_404(User, username=username)
     if author != request.user:
         Follow.objects.get_or_create(user=request.user, author=author)
-    return redirect ('posts:profile', username=username)
+    return redirect('posts:profile', username=username)
+
 
 @login_required
 def profile_unfollow(request, username):
     # Дизлайк, отписка
     author = get_object_or_404(User, username=username)
     Follow.objects.filter(user=request.user, author=author).delete()
-    return redirect ('posts:profile', username=username)
+    return redirect('posts:profile', username=username)
